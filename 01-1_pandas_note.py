@@ -32,7 +32,7 @@ df.iloc[1:3]  # 選擇第 2~3 行 (索引)
 df.loc[1:3]   # 選擇標籤為 1~3 的行
 
 #條件篩選
-df[df['Age'] > 30]  # 年齡大於 30
+# 年齡大於 30
 df[(df['Age'] > 25) & (df['Salary'] > 50000)]  # 多重條件
 df[df['Name'].str.contains('Ali')]  # 字符串篩選
 
