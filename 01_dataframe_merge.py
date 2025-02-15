@@ -15,10 +15,15 @@ df2 = pd.DataFrame({
     'City': ['New York', 'Los Angeles', 'Chicago', 'Houston'],
     'Salary': [70000, 80000, 90000, 100000]
 })
+
 #表單join以id為條件
 merge_data = pd.merge(df1, df2, on="ID", how="outer")
 print(merge_data)
 print("---------------")
+#inner：交集（只保留兩者都有的 key）
+#outer：聯集（保留所有 key，補上 NaN）
+#left：保留 df1 的所有 key
+#right：保留 df2 的所有 key
 
 #指定欄位進行排序
 merge_data2 = merge_data.sort_values("Age", ascending=False)
