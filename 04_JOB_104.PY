@@ -10,6 +10,7 @@ headers = {
 response = requests.get(url, headers=headers)
 response.encoding = "utf-8"
 
+
 if response.status_code == 200:
     print("good!!!!!")
 else:
@@ -20,5 +21,8 @@ soup = BeautifulSoup(response.text, "html.parser")
 
 job = soup.select('#joblist > div:nth-child(2) > div:nth-child(1) > a > div > div:nth-child(1) > div > div:nth-child(2)')
 print(job)
+
+
+
 
 
