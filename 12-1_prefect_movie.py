@@ -9,9 +9,10 @@ from prefect.server.schemas.schedules import IntervalSchedule
 # === 1. 取得最新的 ID 清單 ===
 @task
 def fetch_ids():
-    """模擬從資料庫或 API 取得最新 ID 清單"""
+    """取得最新 ID 清單
     ids = [f"data_{i}" for i in range(1, 2500)]  # 假設 2500 筆資料，每天可能會更新
     return ids
+    """
 
 # === 2. 保存爬取進度 ===
 @task
@@ -19,9 +20,9 @@ def save_progress(last_index: int):
     with open("progress.json", "w") as f:
         json.dump({"last_index": last_index}, f)
 
+#=== 2.1 讀取進度 ===
 @task
 def load_progress():
-    """讀取上次爬取的進度"""
     try:
         with open("progress.json", "r") as f:
             progress = json.load(f)
@@ -40,7 +41,7 @@ def fetch_data(data_id: str):
 # === 4. 存儲數據 ===
 @task
 def save_data(data):
-    """模擬存入資料庫或 CSV"""
+    """存入"""
     with open("results.json", "a") as f:
         json.dump(data, f)
         f.write("\n")  # 每行存一筆數據

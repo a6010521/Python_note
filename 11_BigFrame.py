@@ -68,23 +68,6 @@ def create_bucket(bucket_name):
 
 create_bucket('your-new-bucket-name')
 
-
-#-------------------------先建立buket
-from google.cloud import storage
-
-def create_bucket(bucket_name):
-    """創建 GCS 存儲桶"""
-    storage_client = storage.Client()
-
-    # 創建新的存儲桶
-    bucket = storage_client.create_bucket(bucket_name)
-
-    print(f"存儲桶 {bucket.name} 已成功創建。")
-
-
-create_bucket('your-new-bucket-name')
-
-
 #-------------------------上傳檔案
 from google.cloud import storage
 

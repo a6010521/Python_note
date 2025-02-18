@@ -44,6 +44,11 @@ def data_movie_info(movie_id):
     return results
 
 
+def record_id_info():
+    
+
+
+
 id, count = get_movie_id()
 data_movie_info(id)
 

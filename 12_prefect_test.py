@@ -25,7 +25,8 @@ def save_data(last_index: int):
     try:
         with open("omdb_info.json", "w") as f:
             json.dump({"last_index": last_index}, f)
-
+    except Exception as e:
+        print({e})
 """讀取爬取進度"""
 @task
 def load_data()
