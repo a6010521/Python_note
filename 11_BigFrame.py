@@ -75,9 +75,11 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     """將本地文件上傳到指定的 GCS 存儲桶"""
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
+    #blob 代表 GCS 中的一個檔案物件。在這裡，destination_blob_name 是檔案在 GCS 中的儲存路徑和名稱。這個物件就像是你要上傳的檔案在 GCS 上的代號或位置。
+    #destination_blob_name 是檔案在 GCS 儲存桶中的 "目標檔案名"，這個名稱可以包含資料夾結構（例如 folder/in/bucket/file.csv）。
     blob = bucket.blob(destination_blob_name)
     
-    # 上傳檔案到 GCS
+    # 上傳檔案到 GCS ，source_file_name 是檔案在你本地設備上的路徑
     blob.upload_from_filename(source_file_name)
     print(f"文件 {source_file_name} 已成功上傳到 {bucket_name}/{destination_blob_name}。")
 
