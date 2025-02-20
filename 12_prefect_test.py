@@ -138,22 +138,6 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####第二段應該可定義為omdb_requests的function，第四段用import的方式
 
 
