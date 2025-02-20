@@ -3,18 +3,22 @@ import pandas as pd
 import requests
 import time
 
+API_TOKEN = "de467a5d"
+
+
 def fetch_imdb_id():  
     #路徑會可能來自gcs
     movie_id_csv = pd.read_csv(r"tmdb_detail_raw.csv")
     movie_id_list = movie_id_csv["imdb_id"].tolist()   
     #去除nan值
     movie_id = [movie_id for movie_id in movie_id_list if not (isinstance(movie_id, float) and math.isnan(movie_id))]
+    print(f"已成功取得電影id")
     
     return movie_id
 
-API_TOKEN = "de467a5d"
 
-def crawl_movies_data(movie_id, API_TOKEN):
+
+def crawl_omdb_movies_data(movie_id, API_TOKEN):
 
     max_request = 1000
     count_requests = 0
@@ -36,22 +40,59 @@ def crawl_movies_data(movie_id, API_TOKEN):
         if response.status_code == 200:
             movie_info = response.json()
             results.append(movie_info)
+            print(f"已將{id}資訊加入列表")
+        
             exsiting_id.append(id)
+            print(f"已將{id}加入求取紀錄")
+
             
         else:
             print("爬取失敗")
         
         count_requests += 1
         time.sleep(2)
+        print(f"本日求取資料共{count_requests}筆")
+    #時間戳記
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    file = f"omdb_raw_data_{timestamp}.json"
 
-    return results, exsiting_id
-
-movie_id = fetch_imdb_id()
-data, exitid = crawl_movies_data(movie_id, API_TOKEN)
-print(data)
-print(exitid)
-
+     #儲存檔案   
+    with open(file, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=4)
     
+
+
+    return results, existing_id
+
+#二次抓取
+def crawl_omdb_movies_data_second(movie_id, exsiting_id):
+
+    second_results = []
+
+    for i in movie_id:
+
+        if i in exsiting_id:
+            print(f"{i}已求取過")
+            continue
+        #儲存尚未求取過的id_list
+        second_results.append(i)
+        
+    #叫函式呼叫第二次
+    second_requests_data, second_existing_id = crawl_omdb_movies_data(second_results, API_TOKEN)
+    print({second_requests_data}, {second_existing_id})
+    
+
+
+        
+
+
+
+
+
+
+
+
+
 
 
 
