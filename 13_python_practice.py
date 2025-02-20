@@ -20,3 +20,7 @@ emp_df = pd.DataFrame(data)
 # 顯示 DataFrame
 total_age = emp_df['Age'].sum()
 print(total_age)
+
+total_people = emp_df.shape[0]
+print(total_people)
+
