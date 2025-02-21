@@ -51,13 +51,14 @@ def get_news():
         "新聞分類": titles_list,
         "新聞標題": text_list
     })
+    #新增日期欄位
     news_data["日期"] = datetime.today().strftime("%Y-%m-%d") 
     news_data["日期"] = pd.to_datetime(news_data["日期"])
-    #創建資料建立時間、及儲存指定路徑
+    #創建資料建立時間儲存指定路徑
     current_time = datetime.now().strftime("%Y-%m-%d")
+    #儲存指定路徑
     save_path = "C:\\Users\\User\\Desktop\\Python_note\\01-news_folder"   
     file = os.path.join(save_path, f"{current_time}_news.csv")
-
     news_data.to_csv(file, index=False)
     
 

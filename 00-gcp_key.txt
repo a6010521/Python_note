@@ -1,0 +1,89 @@
+✅ 1. 創建 Service Account
+步驟 1：進入 GCP Console
+前往 GCP 控制台 GCP Console
+確保選擇的是你要操作的專案。
+步驟 2：開啟 IAM & Admin
+在左側導航欄選擇 IAM & Admin > Service Accounts。
+點選 Create Service Account。
+步驟 3：設定 Service Account
+輸入 Service Account 名稱，例如：my-storage-account。
+選擇角色 (Role)，你可以給予 Storage Admin 角色，這樣就擁有管理 Google Cloud Storage 的權限。若只需要存取權限，也可以選擇 Storage Object Admin 或 Storage Object Viewer。
+點選 Create。
+步驟 4：創建金鑰
+在 Grant this Service Account access to project 頁面，點選 Done。
+你會看到剛才創建的 Service Account，點選它旁邊的 "Manage Keys"。
+點擊 Add Key > Create New Key，選擇 JSON 格式並點選 Create。
+這樣會自動下載一個 .json 檔案，這就是你的 Service Account Key。
+
+✅ 2. 設定環境變數
+Windows
+在 CMD 輸入：
+sh
+setx GOOGLE_APPLICATION_CREDENTIALS "你的json_key實際路徑"
+
+Mac/Linux
+在終端機輸入：
+export GOOGLE_APPLICATION_CREDENTIALS="你的json_key實際路徑"
+
+✅ 3. 測試設定
+確認環境變數是否正確設置：
+win : echo %GOOGLE_APPLICATION_CREDENTIALS%
+mac : echo $GOOGLE_APPLICATION_CREDENTIALS
+###如果顯示路徑就是設定成功
+
+
+1. 更改 PowerShell 執行策略
+以管理員身份開啟 PowerShell：
+ PowerShell，然後右鍵選擇 以管理員身份執行。
+檢查目前的執行策略： 在 PowerShell 中輸入以下命令來查看當前的執行策略：
+Get-ExecutionPolicy
+如果結果是 Restricted 或 AllSigned，那就需要更改它。
+
+更改執行策略： 使用以下命令來允許執行本地指令碼（包括 gcloud.ps1）：
+
+Set-ExecutionPolicy RemoteSigned
+這樣會允許 PowerShell 執行本地指令碼和來自網路的已簽名指令碼。
+
+確認更改： 系統會提示你確認是否確定更改執行策略。輸入 Y 並按 Enter 確認。
+
+2. 重新執行 gcloud config set project 命令
+完成上述步驟後，重新開啟 PowerShell 並執行以下命令來設定專案 ID：
+
+powershell
+gcloud config set project 你的project id你的project id
+這樣應該能成功設定專案，並解決因為執行策略限制而無法執行 gcloud 指令的問題。
+
+3. 確認專案設定
+設定完成後，你可以執行以下命令來確認專案是否已正確設置：
+gcloud config get-value project
+
+
+### 更新配額專案
+使用 gcloud 命令來更新應用程式預設憑證的配額專案，這樣它會與當前專案一致，避免配額問題。
+
+以下命令來設定配額專案：
+powershell
+gcloud auth application-default set-quota-project my-project-test-csv-450712
+將 my-project-test-csv-450712 替換為自己的專案 ID。
+
+2. 安裝更新的 gcloud 組件
+power shell
+gcloud components update
+
+
+3.檢查當前專案
+gcloud config get-value project
+會顯示當前專案id
+
+
+###可以分享json_key，這樣不同的sever就可以指向同一個專案
+
+直接在程式中指定 JSON Key
+如果你不想依賴環境變數，也可以在程式中顯式地指定 Service Account Key。
+
+例如：
+
+python
+from google.cloud import storage
+# 使用相同的 JSON Key 檔案
+storage_client = storage.Client.from_service_account_json('/path/to/your/service-account-key.json')

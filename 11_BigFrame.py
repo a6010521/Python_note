@@ -66,13 +66,14 @@ def create_bucket(bucket_name):
     print(f"存儲桶 {bucket.name} 已成功創建。")
 
 
-create_bucket('your-new-bucket-name')
+#create_bucket('002_test')
 
 #-------------------------上傳檔案
 from google.cloud import storage
 
 def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     """將本地文件上傳到指定的 GCS 存儲桶"""
+    #可以想像是一個google api讓我們取的連結可以操作gcs
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     #blob 代表 GCS 中的一個檔案物件。在這裡，destination_blob_name 是檔案在 GCS 中的儲存路徑和名稱。這個物件就像是你要上傳的檔案在 GCS 上的代號或位置。
@@ -84,7 +85,7 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     print(f"文件 {source_file_name} 已成功上傳到 {bucket_name}/{destination_blob_name}。")
 
 
-upload_to_gcs('your-bucket-name', 'path/to/your/file.csv', 'folder/in/bucket/file.csv')
+#upload_to_gcs('002_test', r"C:\Users\User\Desktop\Python_note\01-news_folder\2025-02-21_news.csv", 'news/in/bucket/001.csv')
 
 
 #---設定exteranl table將gcs資料連動至bigquery
@@ -92,9 +93,10 @@ from google.cloud import bigquery
 
 def create_external_table_from_gcs(dataset_id, table_id, bucket_name, source_file_name):
     """將 GCS 中的資料設為 BigQuery 的外部表格"""
+    #建立與bigquery的連線 
     client = bigquery.Client()
 
-    # GCS 檔案 URI
+    # 告訴bigquery要取指向gcs的哪一個檔案
     uri = f"gs://{bucket_name}/{source_file_name}"
 
     # BigQuery 的資料集和表格名稱
@@ -108,16 +110,48 @@ def create_external_table_from_gcs(dataset_id, table_id, bucket_name, source_fil
     )
 
     # 創建外部表格
-    external_table = bigquery.Client().load_table_from_uri(
+    job = bigquery.Client().load_table_from_uri(
         uri, table_ref, job_config=job_config
-    )
-
-    external_table.result()  # 等待作業完成
+    )    
+    job.result()  # 等待作業完成
 
     print(f"外部表格 {table_id} 已成功創建，指向 GCS 中的 {uri}。")
 
 
-create_external_table_from_gcs('your_dataset_id', 'your_table_id', 'your-bucket-name', 'folder/in/bucket/file.csv')
+#create_external_table_from_gcs('News', 'TVBS_NEWS', '002_test', 'news/in/bucket/001.csv')
+
+
+
+#------- 創建一個dataset
+from google.cloud import bigquery
+
+def create_dataset(dataset_id):
+    client = bigquery.Client()
+
+    dataset_ref = client.dataset(dataset_id)
+
+    # 創建資料集
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset = client.create_dataset(dataset)  # 創建資料集
+
+    print(f"資料集 {dataset_id} 已成功創建。")
+
+# 呼叫範例
+#create_dataset('News')  # 創建名為 'News' 的資料集
+
+
+#---檢查目前的project是哪一個---
+
+from google.cloud import storage
+
+def check_gcp_project():
+    storage_client = storage.Client()
+    # 取得當前的 GCP Project ID
+    project_id = storage_client.project
+    print(f"當前 GCP Project ID：{project_id}")
+
+#check_gcp_project()
+
 
 
 
