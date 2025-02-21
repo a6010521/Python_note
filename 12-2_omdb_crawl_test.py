@@ -56,7 +56,7 @@ def crawl_omdb_movies_data(movie_id, API_TOKEN):
     timestamp = datetime.now().strftime("%Y-%m-%d")
     file = f"omdb_raw_data_{timestamp}.json"
 
-     #儲存檔案   
+     #儲存檔案，儲存成raw_data  
     with open(file, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=4)
     

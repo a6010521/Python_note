@@ -48,11 +48,12 @@ def news_df(new_data):
     news_df = pd.DataFrame(data, columns=["即時新聞"])
     news_df["日期"] = datetime.today().strftime("%Y-%m-%d") 
     news_df["日期"] = pd.to_datetime(news_df["日期"])
-    news_df.to_csv('today_news', index=False)
+    news_df.to_csv('today_news.csv', index=False)
     return news_df
 
 result = news_df(new_data)
 print(result)
+print(type(result))
 
 
 

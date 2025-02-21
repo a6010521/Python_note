@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from datetime import datetime
+import os
 
 def get_news():
     # 執行後可以取得 << TVBS-REALNEWS >>
@@ -49,13 +51,20 @@ def get_news():
         "新聞分類": titles_list,
         "新聞標題": text_list
     })
+    news_data["日期"] = datetime.today().strftime("%Y-%m-%d") 
+    news_data["日期"] = pd.to_datetime(news_data["日期"])
+    #創建資料建立時間、及儲存指定路徑
+    current_time = datetime.now().strftime("%Y-%m-%d")
+    save_path = "C:\\Users\\User\\Desktop\\Python_note\\01-news_folder"   
+    file = os.path.join(save_path, f"{current_time}_news.csv")
+
+    news_data.to_csv(file, index=False)
+    
+
     return news_data
 
-# 顯示結果
-#print(news_data)
 result = get_news()
 
-print(result)
 
-#news_data.to_excel('today_tvbs_news.xlsx', index=False)
+
 
