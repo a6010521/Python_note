@@ -5,7 +5,7 @@ import time
 
 #設定基本資料
 send_email = "a6010521@gmail.com"
-recive_email = "sharon881020@yahoo.com.tw"
+recive_email = ""
 password = "lkrd wtca sezf azjr"
 
 #設定標頭

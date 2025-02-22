@@ -80,10 +80,7 @@ gcloud config get-value project
 
 直接在程式中指定 JSON Key
 如果你不想依賴環境變數，也可以在程式中顯式地指定 Service Account Key。
-
-例如：
-
 python
 from google.cloud import storage
-# 使用相同的 JSON Key 檔案
+使用相同的 JSON Key 檔案
 storage_client = storage.Client.from_service_account_json('/path/to/your/service-account-key.json')

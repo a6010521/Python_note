@@ -12,15 +12,20 @@ def omdb_raw_to_tmp(filename, columns):
     current_time = datetime.now().strftime("%Y-%m-%d")
     omdb_tmp_data["data_created_time"] = current_time
     omdb_tmp_data["data_updateded_time"] = current_time
+    #儲存檔名
+    file_info = f"omdb_tmp_{current_time}.csv"
+
 
     #存成csv
-    omdb_tmp_data.to_csv("omdb_tmp.csv", index=False)
+    omdb_tmp_data.to_csv(file_info, index=False)
     print("已成功儲存檔案")
 
 
 #需要導入的檔案
-filename = r"C:\Users\User\Desktop\Python_note\omdb_info.json"
+filename = r"C:\Users\Tibame\Desktop\Python_note\omdb_info.json"
 #需要留著的欄位
-columns = ["imdbID", "imdbRating"]
+columns = ["imdbID", "imdbRating", "Country"]
+#檔名
+ 
 #呼叫 
 omdb_raw_to_tmp(filename, columns)
