@@ -19,6 +19,7 @@ def omdb_raw_to_tmp(filename, columns):
     #存成csv
     omdb_tmp_data.to_csv(file_info, index=False)
     print("已成功儲存檔案")
+    
 
 
 #需要導入的檔案
