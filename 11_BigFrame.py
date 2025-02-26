@@ -26,10 +26,10 @@ pip install --upgrade bigframes pandas
 #-------------------------將DataFrame從bigquery上抓下來
 
 #抓取csv&json語法差異不大，其餘的調整去找chatgpt or 上面的官方文件
-import bigframes.pandas as bpd
+#import bigframes.pandas as bpd
 
 #-----------------------------你的project name
-bpd.options.bigquery.project = "my-project-7393-451114"
+#bpd.options.bigquery.project = "my-project-7393-451114"
 def test_query():
     #------------- 可以去BigQuery複製sql語法from後面那段
     first_query = "my-project-7393-451114.001test.001-test" 
@@ -52,29 +52,29 @@ def test_query():
 # 呼叫測試函式
 #test_query()
 
-#-------------------------將DataFrame��存於Google Cloud Storage
+#-------------------------將raw_data��存於Google Cloud Storage
+
+JSON_KEY_PATH = r"C:\Users\Tibame\Desktop\Python_note\upload_gcs.json"
 
 from google.cloud import storage
 """創建buket"""
 def create_bucket(bucket_name):
     
-    storage_client = storage.Client()
-
+    storage_client = storage.Client.from_service_account_json(JSON_KEY_PATH)
     # 創建新的存儲桶
     bucket = storage_client.create_bucket(bucket_name)
-
     print(f"存儲桶 {bucket.name} 已成功創建。")
 
 
-#create_bucket('002_test')
+#create_bucket("omdb_data_info")
 
 #-------------------------上傳檔案
-from google.cloud import storage
+#from google.cloud import storage
 
 def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     """將本地文件上傳到指定的 GCS 存儲桶"""
     #可以想像是一個google api讓我們取的連結可以操作gcs
-    storage_client = storage.Client()
+    storage_client = storage.Client.from_service_account_json(JSON_KEY_PATH)
     bucket = storage_client.bucket(bucket_name)
     #blob 代表 GCS 中的一個檔案物件。在這裡，destination_blob_name 是檔案在 GCS 中的儲存路徑和名稱。這個物件就像是你要上傳的檔案在 GCS 上的代號或位置。
     #destination_blob_name 是檔案在 GCS 儲存桶中的 "目標檔案名"，這個名稱可以包含資料夾結構（例如 folder/in/bucket/file.csv）。
@@ -85,11 +85,11 @@ def upload_to_gcs(bucket_name, source_file_name, destination_blob_name):
     print(f"文件 {source_file_name} 已成功上傳到 {bucket_name}/{destination_blob_name}。")
 
 
-#upload_to_gcs('002_test', r"C:\Users\User\Desktop\Python_note\01-news_folder\2025-02-21_news.csv", 'news/in/bucket/001.csv')
+upload_to_gcs("omdb_data_info", r"C:\Users\Tibame\Desktop\Python_note\omdb_info.json", "omdb_raw_data.json")
 
 
 #---設定exteranl table將gcs資料連動至bigquery
-from google.cloud import bigquery
+#from google.cloud import bigquery
 
 def create_external_table_from_gcs(dataset_id, table_id, bucket_name, source_file_name):
     """將 GCS 中的資料設為 BigQuery 的外部表格"""
@@ -123,7 +123,7 @@ def create_external_table_from_gcs(dataset_id, table_id, bucket_name, source_fil
 
 
 #------- 創建一個dataset
-from google.cloud import bigquery
+#from google.cloud import bigquery
 
 def create_dataset(dataset_id):
     client = bigquery.Client()
@@ -142,7 +142,7 @@ def create_dataset(dataset_id):
 
 #---檢查目前的project是哪一個---
 
-from google.cloud import storage
+#from google.cloud import storage
 
 def check_gcp_project():
     storage_client = storage.Client()

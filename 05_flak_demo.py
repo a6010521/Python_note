@@ -4,11 +4,11 @@ from google.cloud import bigquery
 client = bigquery.Client()
 
 # 設定資料集ID和資料表ID
-dataset_id = 'your_project_id.your_dataset_id'
-table_id = 'your_table_id'
+dataset_id = "project_id.dataset_id"
+table_id = "table_id"
 
 # 指定要上傳的本地端 CSV 檔案路徑
-file_path = 'path/to/your/local_file.csv'
+file_path = "path/to/your/local_file.csv"
 
 # 設定欄位型態
 schema = [
