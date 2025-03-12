@@ -82,3 +82,6 @@ df.reset_index(inplace=True)
 for index, row in df.iterrows():
     print(row['Name'], row['Age'])
 
+#可迭代多個list
+for j, k, c in zip(Name, Age, City):
+    print(f"Name: {j}, Age: {k}, City: {c}")
