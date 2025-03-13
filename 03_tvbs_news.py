@@ -4,8 +4,9 @@ import pandas as pd
 from datetime import datetime
 import os
 
+# 執行後可以取得 << TVBS-REALNEWS >>
 def get_news():
-    # 執行後可以取得 << TVBS-REALNEWS >>
+    
     url = "https://news.tvbs.com.tw/realtime"
 
     headers = {
@@ -64,12 +65,24 @@ def get_news():
 
     return news_data
 
-result = get_news()
+#result = get_news()
 
 
+#指定篩選欄位閱讀
+def read_news():
+    #讀取指定路徑
+    file_path = r"C:\Users\User\Desktop\Python_note\01-news_folder\2025-03-14_news.csv"
+    #讀取csv
+    news_data = pd.read_csv(file_path)
+    #計算有幾種新聞種類
+    news_type_counts = news_data['新聞分類'].value_counts()
+    #指定分類新聞
+    entertainment_news = news_data[news_data['新聞分類'] == '娛樂']
+    
+    return news_type_counts
 
-#以下練習，與上述無關
-
+info = read_news()
+print(info)
 
 
     
